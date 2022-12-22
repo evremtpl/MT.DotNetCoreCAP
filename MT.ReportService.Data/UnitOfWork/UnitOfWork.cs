@@ -44,9 +44,20 @@ namespace MT.ReportService.Data.UnitOfWork
 
             if (_transaction is null && _events.Any())
             {
-                await BeginTransactionAsync(cancellationToken);
-                result = await _context.SaveChangesAsync(cancellationToken);
-                PublishEvents();
+              
+                try
+                {
+                    await BeginTransactionAsync(cancellationToken);
+                    result = await _context.SaveChangesAsync(cancellationToken);
+                    await PublishEvents();
+                }
+                catch (Exception)
+                {
+
+                    _transaction.Rollback();
+                    result = 0;
+                }
+                
                 await CommitTransactionAsync(cancellationToken);
             }
             else
@@ -69,16 +80,18 @@ namespace MT.ReportService.Data.UnitOfWork
             _events.Clear();
         }
 
-        private void PublishEvents()
+        private async Task PublishEvents()
         {
             foreach (var @event in _events)
             {
+                var tip = @event.GetType();
+
                 var attr = (EventKeyAttribute)Attribute.GetCustomAttributes(@event.GetType())
                     .FirstOrDefault(i => i is EventKeyAttribute);
 
                 if (attr is not null)
                 {
-                    _publisher.Publish(attr.Key, @event);
+                   await _publisher.PublishAsync<EventBase>(attr.Key, @event);
                 }
             }
 

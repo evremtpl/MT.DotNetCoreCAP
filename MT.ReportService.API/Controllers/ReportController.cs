@@ -54,7 +54,7 @@ namespace MT.ReportService.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var report =await _reportService.GetByIdAsync(id);
             _reportService.Delete(report);

@@ -48,7 +48,7 @@ namespace MT.ReportService.Service.Services
 
       
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(string id)
         {
             return await _repository.GetByIdAsync(id);
         }

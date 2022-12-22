@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MT.ReportService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221216193313_migInit")]
+    [Migration("20221222183833_migInit")]
     partial class migInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,8 +23,8 @@ namespace MT.ReportService.Data.Migrations
 
             modelBuilder.Entity("MT.ReportService.Core.Entity.Report", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp without time zone");

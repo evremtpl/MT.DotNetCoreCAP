@@ -1,4 +1,5 @@
 using AutoMapper;
+using DotNetCore.CAP;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MT.RabbitMq;
 using MT.ReportService.API.AllExtentions;
+using MT.ReportService.API.Consumer;
 using MT.ReportService.Core.Interfaces.Repositories;
 using MT.ReportService.Core.Interfaces.Services;
 using MT.ReportService.Core.Interfaces.UnitOfWork;
@@ -37,8 +39,8 @@ namespace MT.ReportService.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
 
+            services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
           
@@ -48,22 +50,13 @@ namespace MT.ReportService.API
 
 
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("NpgConStr"), o => o.MigrationsAssembly("MT.ReportService.Data")));
-
+            services.AddTransient<ConsumerService>();
             services.AddCap(options =>
             {
+                options.UseDashboard(o => o.PathMatch = "/cap-dashboard");
+                options.UsePostgreSql(Configuration.GetConnectionString("NpgConStr"));
                 options.UseEntityFramework<AppDbContext>();
-                options.UseRabbitMQ(options =>
-                {
-                    options.ConnectionFactoryOptions = options =>
-                    {
-                        options.Ssl.Enabled = false;
-                        options.HostName = BusConstants.RabbitMqUri;
-                        options.Port = BusConstants.Port;
-                        options.UserName = BusConstants.UserName;
-                        options.Password = BusConstants.Password;
-
-                    };
-                });
+                options.UseRabbitMQ(BusConstants.RabbitMqUri);
                 
             });
 
@@ -83,7 +76,7 @@ namespace MT.ReportService.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MT.ReportService.API v1"));
             }
-
+            app.UseCapDashboard();
             app.UseRouting();
 
             app.UseAuthorization();

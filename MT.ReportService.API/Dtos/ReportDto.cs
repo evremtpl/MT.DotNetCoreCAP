@@ -10,7 +10,7 @@ namespace MT.ReportService.API.Dtos
     }
     public class ReportDto
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string ReportName { get; set; }
         public DateTime CreateDate { get; set; }
     }
