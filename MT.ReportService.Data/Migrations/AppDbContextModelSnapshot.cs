@@ -21,8 +21,8 @@ namespace MT.ReportService.Data.Migrations
 
             modelBuilder.Entity("MT.ReportService.Core.Entity.Report", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp without time zone");

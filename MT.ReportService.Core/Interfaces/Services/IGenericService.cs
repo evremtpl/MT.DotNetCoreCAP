@@ -9,7 +9,7 @@ namespace MT.ReportService.Core.Interfaces.Services
 {
     public interface IGenericService<TEntity> where TEntity : class, new()
     {
-        Task<TEntity> GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(string id);
         Task<IEnumerable<TEntity>> Find(Expression<Func<TEntity, bool>> predicate);
 
         Task<IEnumerable<TEntity>> GetAllAsync();

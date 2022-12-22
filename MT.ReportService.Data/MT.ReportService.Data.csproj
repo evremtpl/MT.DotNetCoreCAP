@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetCore.CAP" Version="5.0.2" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.0.2" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="5.0.2" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="5.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17" >
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
